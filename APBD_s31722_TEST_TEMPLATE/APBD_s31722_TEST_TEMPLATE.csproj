@@ -12,8 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-      <Folder Include="DataLayer\Models\" />
+      <Folder Include="Resources\creatingSQL\" />
     </ItemGroup>
 
 </Project>

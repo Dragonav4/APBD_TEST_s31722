@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace APBD_s31722_TEST_TEMPLATE.Exceptions;
+namespace APBD_s31722_9_APi_2.Exceptions;
 
 public class ApiExceptionMiddleware
 {
@@ -20,21 +20,22 @@ public class ApiExceptionMiddleware
         {
             await _next(context);
         }
-        catch (ApiExceptions ex)
-        {
-            _logger.LogWarning(ex, "Api Exception(error)");
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = ex.StatusCode;
-            var payload = ex.ToJson();
-            await context.Response.WriteAsync(payload);
-        }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unhandled exception(error)");
+            _logger.LogError(ex.Message);
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            var payload = JsonSerializer.Serialize(new {error = "Internal Server Error"});
+            context.Response.StatusCode = (int)GetStatusCode(ex);
+            var payload = JsonSerializer.Serialize(new {error = ex.Message, stacktrace = ex.StackTrace});
             await context.Response.WriteAsync(payload);
         }
+    }
+
+    private static HttpStatusCode GetStatusCode(Exception ex)
+    {
+        if (ex is BadRequestException badRequestException)
+            return badRequestException.StatusCode;
+        if (ex is InternalServerErrorException serverException)
+            return serverException.StatusCode;
+        return HttpStatusCode.InternalServerError;
     }
 }

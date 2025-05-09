@@ -1,6 +1,5 @@
 using System.Data;
 using APBD_s31722_TEST_TEMPLATE.DataLayer;
-using APBD_s31722_TEST_TEMPLATE.DataLayer.Models;
 using Microsoft.Data.SqlClient;
 
 namespace APBD_s31722_TEST_TEMPLATE.Interfaces;

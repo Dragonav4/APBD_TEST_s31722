@@ -1,32 +1,28 @@
-using APBD_s31722_TEST_TEMPLATE.Exceptions;
+using System.Net;
 using System.Text.Json;
 
-namespace APBD_s31722_TEST_TEMPLATE.Exceptions;
+namespace APBD_s31722_9_APi_2.Exceptions;
 
-public class ApiExceptions : Exception
+public class BadRequestException : Exception
 {
-    public int StatusCode { get; set; }
-    public object Errors { get; set; }
-    
-    public ApiExceptions(int statusCode, string message, object? errors = null)
-        : base(message)
-    {
-        StatusCode = statusCode;
-        Errors = errors;
-    }
+    public HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
+    public BadRequestException(string message) : base(message) { }
 
-    public ApiExceptions(ErrorStatusCode statusCode, string message, object? errors = null)
-        : this((int)statusCode, message, errors)
+    public override string ToString()
     {
-    }
-
-    public string ToJson()
-    {
-        var problem = new
-        {
-            error = Message,
-            details = Errors,
-        };
-            return JsonSerializer.Serialize(problem);
+        return JsonSerializer.Serialize(this);
     }
 }
+
+[Serializable]
+public class InternalServerErrorException : Exception
+{
+    public HttpStatusCode StatusCode => HttpStatusCode.InternalServerError;
+    public InternalServerErrorException(string message) : base(message) { }
+
+    public override string ToString()
+    {
+        return JsonSerializer.Serialize(this);
+    }
+}
+
