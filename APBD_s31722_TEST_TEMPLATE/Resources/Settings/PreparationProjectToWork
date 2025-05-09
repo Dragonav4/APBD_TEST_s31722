@@ -1,0 +1,18 @@
+0. Add Web API before creating project
+0. Pull project from git
+1. Add in .csproj "<PackageReference Include="Microsoft.Data.SqlClient" Version="x.y.z" />"
+2. Create a custom "start" configuration: 
+    2.1 Delete http and https configs
+    2.2 Add a new one ".net Project"
+    2.3 Name it Start
+3.Establish connection with Database
+    3.1 Check correspond port in console aka http://localhost:5000
+    3.2
+    Host: DB-MSSQL16.pjwstk.edu.pl
+    Port: 1433
+    Database: 2019SBD
+    User: s31722@pjwstk.edu.pl
+    Password: for sxxxxx
+    
+
+    
