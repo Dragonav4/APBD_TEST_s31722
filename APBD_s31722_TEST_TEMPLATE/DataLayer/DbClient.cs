@@ -1,4 +1,5 @@
 using System.Data;
+using APBD_s31722_TEST_TEMPLATE.Interfaces;
 using Microsoft.Data.SqlClient;
 
 namespace APBD_s31722_TEST_TEMPLATE.DataLayer;
@@ -9,13 +10,19 @@ public class CommandConfig
     public object Parameters { get; set; }
 }
 
-public class DbClient(IConfiguration configuration)
+public class DbClient : IDbClient
 {
+    private readonly IConfiguration _configuration;
+    public DbClient(IConfiguration configuration)
+    {
+        this._configuration = configuration;
+    }
+
     //For lists, read list of users etc
     public async IAsyncEnumerable<T> ReadDataAsync<T>(string query, Func<SqlDataReader, T> map, Dictionary<string, object> parameters = null)
     {
         await using (var sqlConnection =
-               new SqlConnection(configuration.GetConnectionString("Default")))
+               new SqlConnection(_configuration.GetConnectionString("Default")))
         await using (var command = new SqlCommand(query, sqlConnection))
         {
             if (parameters?.Count > 0)
@@ -37,7 +44,7 @@ public class DbClient(IConfiguration configuration)
     public async Task<int?> ReadScalarAsync(string query, Dictionary<string, object> parameters = null)
     {
         await using (var sqlConnection =
-               new SqlConnection(configuration.GetConnectionString("Default")))
+               new SqlConnection(_configuration.GetConnectionString("Default")))
         await using (var command = new SqlCommand(query, sqlConnection))
         {
             if (parameters?.Count > 0)
@@ -57,7 +64,7 @@ public class DbClient(IConfiguration configuration)
         CommandType commandType = CommandType.Text)
     {
         await using (var sqlConnection =
-               new SqlConnection(configuration.GetConnectionString("Default")))
+               new SqlConnection(_configuration.GetConnectionString("Default")))
         await using (var command = new SqlCommand(query, sqlConnection))
         {
             if (parameters?.Count > 0)
@@ -78,7 +85,7 @@ public class DbClient(IConfiguration configuration)
     public async Task<int> ExecuteNonQueryAsync(string query, Dictionary<string, object> parameters = null)
     {
         await using (var sqlConnection =
-               new SqlConnection(configuration.GetConnectionString("Default")))
+               new SqlConnection(_configuration.GetConnectionString("Default")))
         await using (var command = new SqlCommand(query, sqlConnection))
         {
             if (parameters?.Count > 0)
@@ -98,7 +105,7 @@ public class DbClient(IConfiguration configuration)
     {
         var result = 0;
         await using var sqlConnection =
-                     new SqlConnection(configuration.GetConnectionString("Default"));
+                     new SqlConnection(_configuration.GetConnectionString("Default"));
         await sqlConnection.OpenAsync();
         var transaction = sqlConnection.BeginTransaction();
         try
@@ -138,7 +145,7 @@ public class DbClient(IConfiguration configuration)
         Dictionary<string, object> parameters = null)
     {
         await using (var sqlConnection =
-                     new SqlConnection(configuration.GetConnectionString("Default")))
+                     new SqlConnection(_configuration.GetConnectionString("Default")))
         await using (var command = new SqlCommand(query, sqlConnection))
         {
             if (parameters?.Count > 0)
