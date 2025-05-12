@@ -1,4 +1,4 @@
-namespace APBD_s31722_8_API.Utils;
+namespace APBD_s31722_TEST_TEMPLATE.Utils;
 
 public static class AsyncEnumerableExtensions
 {

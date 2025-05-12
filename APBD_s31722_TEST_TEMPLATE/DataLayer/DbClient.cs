@@ -15,7 +15,7 @@ public class DbClient : IDbClient
     private readonly IConfiguration _configuration;
     public DbClient(IConfiguration configuration)
     {
-        this._configuration = configuration;
+        _configuration = configuration;
     }
 
     //For lists, read list of users etc
@@ -119,7 +119,6 @@ public class DbClient : IDbClient
                     var type = commandConfig.Parameters.GetType();
                     var fields = type.GetProperties();
                     
-                    // map parameters using reflection
                     foreach (var fieldInfo in commandConfig.Parameters.GetType().GetProperties())
                     {
                         command.Parameters.AddWithValue($"@{fieldInfo.Name}", fieldInfo.GetValue(commandConfig.Parameters));

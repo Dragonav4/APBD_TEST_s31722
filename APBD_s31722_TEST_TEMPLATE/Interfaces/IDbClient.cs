@@ -7,24 +7,18 @@ namespace APBD_s31722_TEST_TEMPLATE.Interfaces;
 public interface IDbClient
 {
     IAsyncEnumerable<T> ReadDataAsync<T>(
-        string query, 
+        string query,
         Func<SqlDataReader, T> map,
         Dictionary<string, object> parameters = null);
-    
+
     Task<T> ReadScalarAsync<T>(
-        string query, 
+        string query,
         Dictionary<string, object> parameters = null,
         CommandType commandType = CommandType.Text);
-    
+
     Task<int?> ReadScalarAsync(
-        string query, 
+        string query,
         Dictionary<string, object> parameters = null);
 
     Task<int> ExecuteNonQueriesAsTransactionAsync(List<CommandConfig> commands);
-
-    Task<int> ExecuteNonQueryAsync(string query, Dictionary<string, object> parameters = null);
-    
-    Task<int> ExecuteNonQueryInTransactionAsync<T>(string query,Dictionary<string,object> parameters = null);
-
-
 }
